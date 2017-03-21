@@ -1014,17 +1014,406 @@ int main()
   <div>
   <h1 class="display">Binary Search Tree </h1>
   <hr class="my">
-   <h3>title</h3>
+   <h3>Myset.he</h3>
   <code>
 	<xmp>
-code goes here 
+#ifndef MYSET
+#define MYSET
+#include "MySetNode.h"
+#include <vector>
+
+using namespace std;
+
+
+template <class T>
+class MySet {
+public:  ///Public to allow testing of helper functions outside the class
+    MySetNode<T>* root;
+    ///Constructors/assignment op
+    MySet();
+    MySet(const MySet& other);
+
+    MySet& operator=(const MySet& other);
+    ///Destructor - deletes any child nodes
+    ~MySet();
+    void copy(MySetNode<T>* root);
+    void duplicateSubTree(MySetNode<T>* startNode);
+    bool contains(T item);
+    MySet<T> unionWith(const MySet& other);
+    void deleteSubTree(MySetNode<T>* startNode);
+    T findLargest() const;
+    bool addWords(T value);
+    bool add(T value);
+    int size();
+    int depth();
+    bool remove(T item);
+    T extractLargest();
+
+};
+
+///if looked at in debugger it adds everthing but makes a linked list.
+template<class T>
+MySet<T> MySet<T>::unionWith(const MySet& other) {
+
+    vector<T> v_one;
+    MySet<T> otherCopy;
+
+    otherCopy.copy(other.root);
+    int y = root->nodeCount;
+    for(int i = 0; i < y/2; i++){
+        v_one.push_back(otherCopy.extractLargest());
+    }
+
+    for(int i = 0; i < v_one.size(); i++){
+        T num = v_one.at(i);
+        this->add(num);
+    }
+}
+
+
+template<class T>
+bool MySet<T>::add(T item){
+
+    MySetNode<T>* parent;
+    MySetNode<T>* current;
+    if (root == nullptr)
+        root = new MySetNode<T>(item);
+    else
+    {
+        // Locate the parent node
+        current = root;
+        while (current != nullptr)
+            if (item < current->item)
+            {
+                parent = current;
+                current = current->left;
+            }
+            else if (item > current->item)
+            {
+                parent = current;
+                current = current->right;
+            }
+            else
+                return false; // Duplicate node not inserted
+        // Create the new node and attach it to the parent node
+        if (item < parent->item)
+            parent->left = new MySetNode<T>(item);
+        else
+            parent->right = new MySetNode<T>(item);
+        return true; // item inserted
+    }
+}
+
+
+
+template<class T>
+int MySet<T>::depth(){
+
+    T max = 1;
+    T max2 = 1;
+    MySetNode<T>* current;
+    MySetNode<T>* parent;
+
+    current = this->root;
+    if(this->root == nullptr){
+        current = root;
+        return max;
+    }
+    else{
+        while(current!= nullptr){\
+            parent = current;
+            parent->item = current->item;
+            current = current->right;
+            max = max + 1;
+        }
+        while(current!= nullptr){
+            parent = current;
+            parent->item = current->item;
+            current = current->left;
+            max2 = max2 + 1;
+        }
+        if(max > max2){
+            return max;
+        }
+        else{
+            return max2;
+        }
+    }
+}
+
+
+
+
+template<class T>
+bool MySet<T>::addWords(T item){
+
+    MySetNode<T>* parent;
+    MySetNode<T>* current;
+    if (root == nullptr)
+        root = new MySetNode<T>(item);
+    else
+    {
+        // Locate the parent node
+        current = root;
+        while (current != nullptr)
+            if (item < current->item)
+            {
+                parent = current;
+                current = current->left;
+            }
+            else if (item > current->item)
+            {
+                parent = current;
+                current = current->right;
+            }
+            else
+                return false; // Duplicate node not inserted
+        // Create the new node and attach it to the parent node
+        if (parent->left == nullptr)
+            parent->left = new MySetNode<T>(item);
+        else
+            parent->right = new MySetNode<T>(item);
+        return true; // item inserted
+    }
+}
+
+
+template<class T>
+T MySet<T>::findLargest() const{
+    T max;
+    MySetNode<T>* current;
+    MySetNode<T>* parent;
+    current = this->root;
+    if(this->root == nullptr){
+        current = root;
+        return 0;
+    }
+    else{
+        while(current!= nullptr){\
+            parent = current;
+            parent->item = current->item;
+            current = current->right;
+            max = parent->item;
+        }
+        return max /*current->item*/;
+    }
+}
+
+template<class T>
+T MySet<T>::extractLargest(){
+    T max = findLargest();
+    remove(max);
+    return max;
+}
+
+
+template <class T>
+bool MySet<T>::remove(T item) {
+    // Locate the node to be deleted and also locate its parent node
+    MySetNode<T>* parent = nullptr;
+    MySetNode<T>* current = root;
+    while (current != nullptr)
+    {
+        if (item < current->item){
+            parent = current;
+            current = current->left;
+        }
+        else if (item > current->item){
+            parent = current;
+            current = current->right;
+        }
+        else
+            break; // item is in the tree pointed by current
+    }
+    if (current == nullptr)
+        return false;
+    // item is not in the tree
+    // Case 1: current has no left children
+    if (current->left == nullptr){
+        if (parent == nullptr){
+            root = current->right;
+        }
+        else
+        {
+            if (item < parent->item)
+                parent->left = current->right;
+            else
+                parent->right = current->right;
+        }
+        delete current; // Delete current
+    } else{
+        // the current node and also its parent
+        MySetNode<T>* parentOfRightMost = current;
+        MySetNode<T>* rightMost = current->left;
+        while (rightMost->right != nullptr){
+            parentOfRightMost = rightMost;
+            rightMost = rightMost->right; // Keep going to the right
+        }
+        // Replace the item in current by the item in rightMost
+        current->item = rightMost->item;
+        // Eliminate rightmost node
+        if (parentOfRightMost->right == rightMost)
+            parentOfRightMost->right = rightMost->left;
+        else
+            // Special case: parentOfRightMost->right == current
+            parentOfRightMost->left = rightMost->left;
+        delete rightMost; // Delete rightMost
+    }
+    return true; // item inserted
+}
+
+template <class T>
+bool MySet<T>::contains(T item){
+    if(searchHelp(root, item) == nullptr){
+        return false;
+    }
+    else{
+        return true;
+    }
+}
+
+template <class T>
+void MySet<T>::deleteSubTree(MySetNode <T>* startNode) {
+    if(startNode == nullptr){
+        return;
+    }
+    deleteSubTree(startNode->left);
+    deleteSubTree(startNode->right);
+    delete startNode;
+}
+
+template <class T>
+MySetNode<T>* duplicateSubTree(MySetNode<T>* startNode) {
+    if(startNode == nullptr)
+        return nullptr;
+    MySetNode<T>* newNode = new MySetNode<T>(startNode->item);
+    newNode->left = duplicateSubTree(startNode->left);
+    newNode->right = duplicateSubTree(startNode->right);
+    return newNode;
+}
+
+
+template <typename T>
+void MySet<T>::copy(MySetNode<T>* root)
+{
+    if (root != NULL)
+    {
+        add(root->item);
+        copy(root->left);
+        copy(root->right);
+    }
+}
+
+template <class T>
+MySet<T>::MySet(const MySet& other) {
+    root = duplicateSubTree(other.root);
+}
+
+template <class T>
+MySet<T>::MySet(){
+    root = nullptr;
+}
+
+template <class T>
+MySet<T>::~MySet() {
+    deleteSubTree(root);
+}
+
+template <class T>
+MySet<T>& MySet<T>::operator=(const MySet& other){
+    if(this != &other){
+        deleteSubTree(root);
+        root =duplicateSubTree(other.root);
+    }
+    return *this;
+}
+
+template <class T>
+int MySet<T>::size(){
+    return this->root->nodeCount;
+}
+
+
+#endif // MYSET
+
+
 </xmp>
   </code>
   
-<h3>title </h3>
+<h3>MySetNode.h </h3>
 <code>
 <xmp>
-code goes here 
+#ifndef MYSETNODE
+#define MYSETNODE
+#include "MySet.h"
+#include "MySetNode.h"
+
+template <class T>
+class MySetNode {
+public:
+    ///Store a value and two child pointers
+    T item;
+    MySetNode<T>* left;
+    MySetNode<T>* right;
+    ///Constructor - left/right set to null
+    MySetNode(T val);
+    ///Destructor - decrement counter
+    ~MySetNode();
+    ///Debugging purposes only - Not a normal feature
+    ///  Used for tracking memory allocation, updated in constructor/destructor
+    static int nodeCount;
+
+    T searchHelp(MySetNode root, T item);
+
+    void deleteSubTree(MySetNode <T>* startNode);
+
+};
+
+template <class T>
+void MySetNode<T>::deleteSubTree(MySetNode <T>* startNode) {
+    if(startNode == nullptr){
+        return;
+    }
+    deleteSubTree(startNode->left);
+    deleteSubTree(startNode->right);
+    delete startNode;
+}
+
+
+
+template <class T>
+T MySetNode<T>::searchHelp(MySetNode node, T item){
+    if( node == nullptr){
+        return false;
+    }
+    if(node == item){
+        return true;
+    }
+    if(item < node){
+        return searchhelp(node.left, item);
+    }
+    else{
+        return searchHelp(node.right, item);
+    }
+}
+
+template <class T>
+int MySetNode<T>::nodeCount = 0;
+template <class T>
+MySetNode<T>::MySetNode(T val) {
+    item = val;
+    left = nullptr;
+    right = nullptr;
+    nodeCount++;
+}
+
+template <class T>
+MySetNode<T>::~MySetNode() {
+    nodeCount--;
+}
+
+#endif // MYSETNODE
+
 </xmp>
 </code>
 
@@ -1044,11 +1433,46 @@ code goes here
 </code>
 
 
-<h3> title </h3>
+<h3> main.cpp </h3>
 <code>
 <xmp>
 
-code goes here
+#include <iostream>
+#include <ctime>
+#include <vector>
+#include "MySet.h"
+
+using namespace std;
+
+int main(){
+    MySet <int> test;
+    clock_t adding = clock();
+
+
+    for(int i = 0; i < 5; i++){
+
+        int r1 = (rand() % 100);         // v1 in the range 0-99
+        int r2 = rand() % 1000;      // v2 in the range 0-999
+
+        r1 = r1 * 1000;
+        int random = r1 + r2;
+        test.add(random);
+    }
+
+    clock_t count = clock() - adding;
+    double sec = (1.0 * count / CLOCKS_PER_SEC);
+
+    cout<< "adding took "<< sec << " seconds " << endl;
+    cout << "The number of items in the set are: " << test.size() << endl;
+    cout << "The depth of the set is: " << test.depth() << endl;
+
+
+    cout << "The largest in the set is: " << test.extractLargest() << endl;
+    for (int i = 0; i < 4; i++){
+        cout << "The largest in the set now is: " << test.extractLargest() << endl;
+
+    }
+	}
 
 </xmp>
 </code>
