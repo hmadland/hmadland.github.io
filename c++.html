@@ -67,6 +67,62 @@
 </div>
 </div>
 
+<h2> Calculator & GUI</h2>
+<h3> CalcGui.h </h3>
+<cod>
+<xmp>
+#ifndef GRIDLAYOUTDIALOG
+#define GRIDLAYOUTDIALOG
+
+#include <QDialog>
+#include <QLineEdit>
+#include "calculator.h"
+
+class CalcGui : public QDialog
+{
+    Q_OBJECT
+
+private:
+    QLineEdit* lineEdit;
+    Calculator calcEngine;
+
+public:
+    CalcGui(QWidget *parent = 0);
+    ~CalcGui();
+
+    QPushButton* btn0;
+    QPushButton* btn1;
+    QPushButton* btn2;
+    QPushButton* btn3;
+    QPushButton* btn4;
+    QPushButton* btn5 ;
+    QPushButton* btn6 ;
+    QPushButton* btn7 ;
+    QPushButton* btn8;
+    QPushButton* btn9 ;
+
+    QPushButton* btnDiv;
+    QPushButton* btnMul;
+    QPushButton* btnPlus ;
+    QPushButton* btnSub;
+    QPushButton* btnEqual ;
+    QPushButton* btnPoint;
+    QPushButton* btnRec;
+    QPushButton* btnMod;
+    QPushButton* btnSqrt;
+    QPushButton* btnClear;
+
+public slots:
+    void buttonPressed();
+
+};
+
+#endif
+</xmp>
+</code>
+
+
+
 
 
 </body>
