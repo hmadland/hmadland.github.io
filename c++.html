@@ -122,6 +122,480 @@ public slots:
 #endif
 </xmp>
   </code>
+  
+<h3>Calculator.h</h3>
+<code>
+<xmp>
+#ifndef CALCULATOR_H
+#define CALCULATOR_H
+
+class Calculator {
+public:
+    friend class CalcGui;
+    Calculator();
+
+    enum opType
+    {
+        ADD ,
+        SUBTRACT ,
+        MULTIPLY ,
+        DIVIDE,
+        SQRT,
+        NONE    //no stored operation
+    };
+
+    void store(double value);
+    double handleOperation(Calculator::opType newOperation);
+    double equalsPressed();
+    void clear();
+
+private:
+    double num1;
+    double num2;
+    opType oper;
+};
+#endif // CALCULATOR_H
+</xmp>
+</code>
+
+<h3>CalcGui.cpp</h3>
+<code>
+<xmp>
+#include "CalcGui.h"
+#include "Calculator.h"
+#include <QPushButton>
+#include <QLabel>
+#include <QGridLayout>
+#include <QSizePolicy>
+#include <QLineEdit>
+#include <QDialog>
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+CalcGui::CalcGui(QWidget *parent) :
+    QDialog(parent)
+{
+    //---------------NUMBER-BUTTONS------------------------
+    btn0 = new QPushButton("0");
+    btn1 = new QPushButton("1");
+    btn2 = new QPushButton("2");
+    btn3 = new QPushButton("3");
+    btn4 = new QPushButton("4");
+    btn5 = new QPushButton("5");
+    btn6 = new QPushButton("6");
+    btn7 = new QPushButton("7");
+    btn8 = new QPushButton("8");
+    btn9 = new QPushButton("9");
+
+    //--------------OPERATOR-BUTTONS-----------------------
+    btnDiv = new QPushButton("/");
+    btnMul = new QPushButton("X");
+    btnPlus = new QPushButton("+");
+    btnSub = new QPushButton("-");
+    btnEqual = new QPushButton("=");
+    btnPoint = new QPushButton(".");
+    btnRec = new QPushButton("1/x");
+   /// btnMod = new QPushButton("%");
+    btnSqrt = new QPushButton("√X");
+    btnClear = new QPushButton("C");
+    //-------------------------------------------------
+
+    QHBoxLayout* bottomPane2 = new QHBoxLayout;
+    bottomPane2->addWidget(btn0);
+    bottomPane2->addWidget(btnPoint);
+    bottomPane2->addWidget(btnPlus);
+    bottomPane2->addWidget(btnEqual);
+    bottomPane2->addStretch();
+
+    QHBoxLayout* bottomPane = new QHBoxLayout;
+    bottomPane->addWidget(btn1);
+    bottomPane->addWidget(btn2);
+    bottomPane->addWidget(btn3);
+    bottomPane->addWidget(btnSub);
+    bottomPane->addStretch();
+
+    QHBoxLayout* midPane = new QHBoxLayout;
+    midPane->addWidget(btn4);
+    midPane->addWidget(btn5);
+    midPane->addWidget(btn6);
+    midPane->addWidget(btnMul);
+    midPane->addWidget(btnRec);
+    midPane->addStretch();
+
+    QHBoxLayout* topPane = new QHBoxLayout;
+    topPane->addWidget(btn7);
+    topPane->addWidget(btn8);
+    topPane->addWidget(btn9);
+    topPane->addWidget(btnDiv);
+    topPane->addWidget(btnMod);
+    topPane->addStretch();
+
+    QHBoxLayout* veryTopPane = new QHBoxLayout;
+    veryTopPane->addWidget(btnSqrt);
+    veryTopPane->addWidget(btnClear);
+    veryTopPane->addStretch();
+
+    QHBoxLayout* console = new QHBoxLayout;
+    lineEdit = new QLineEdit("");
+    console->addWidget(lineEdit);
+
+    QVBoxLayout* mainLayout = new QVBoxLayout;
+    mainLayout->addLayout(console);
+    mainLayout->addLayout(veryTopPane);
+    mainLayout->addLayout(topPane);
+    mainLayout->addLayout(midPane);
+    mainLayout->addLayout(bottomPane);
+    mainLayout->addLayout(bottomPane2);
+
+    setLayout(mainLayout);
+
+    //------------Wire up events-----------------:
+    connect(btn0, SIGNAL(clicked()),
+            this, SLOT(buttonPressed()));
+    connect(btn1, SIGNAL(clicked()),
+            this, SLOT(buttonPressed()));
+    connect(btn2, SIGNAL(clicked()),
+            this, SLOT(buttonPressed()));
+    connect(btn3, SIGNAL(clicked()),
+            this, SLOT(buttonPressed()));
+    connect(btn4, SIGNAL(clicked()),
+            this, SLOT(buttonPressed()));
+    connect(btn5, SIGNAL(clicked()),
+            this, SLOT(buttonPressed()));
+    connect(btn6, SIGNAL(clicked()),
+            this, SLOT(buttonPressed()));
+    connect(btn7, SIGNAL(clicked()),
+            this, SLOT(buttonPressed()));
+    connect(btn8, SIGNAL(clicked()),
+            this, SLOT(buttonPressed()));
+    connect(btn9, SIGNAL(clicked()),
+            this, SLOT(buttonPressed()));
+    connect(btnDiv, SIGNAL(clicked()),
+            this, SLOT(buttonPressed()));
+    connect(btnMul, SIGNAL(clicked()),
+            this, SLOT(buttonPressed()));
+    connect(btnPlus, SIGNAL(clicked()),
+            this, SLOT(buttonPressed()));
+    connect(btnSub, SIGNAL(clicked()),
+            this, SLOT(buttonPressed()));
+    connect(btnEqual, SIGNAL(clicked()),
+            this, SLOT(buttonPressed()));
+    connect(btnPoint, SIGNAL(clicked()),
+            this, SLOT(buttonPressed()));
+    connect(btnRec, SIGNAL(clicked()),
+            this, SLOT(buttonPressed()));
+    connect(btnMod, SIGNAL(clicked()),
+            this, SLOT(buttonPressed()));
+    connect(btnSqrt, SIGNAL(clicked()),
+            this, SLOT(buttonPressed()));
+    connect(btnClear, SIGNAL(clicked()),
+            this, SLOT(buttonPressed()));
+}
+
+//--------buttonPressed and prining to console----------------------
+//---------------NUMBER-BUTTONS------------------------
+
+void CalcGui::buttonPressed(){
+    QObject* mySender = QObject::sender();
+
+    if(mySender == btn0){
+        QString text = lineEdit->text();
+        if(text.contains("+") || text.contains("X")|| text.contains("/")
+                || text.contains("-") || text.contains("%") || text.contains("√")){
+            lineEdit->setText("");
+        }
+        lineEdit->setText(lineEdit->text()+ "0");
+    }
+
+    else if(mySender == btn1){
+        QString text = lineEdit->text();
+        if(text.contains("+") || text.contains("X")|| text.contains("/")
+                || text.contains("-") || text.contains("%") || text.contains("√")){
+            lineEdit->setText("");
+        }
+        lineEdit->setText(lineEdit->text()+ "1");
+    }
+
+    else if(mySender == btn2){
+        QString text = lineEdit->text();
+        if(text.contains("+") || text.contains("X")|| text.contains("/")
+                || text.contains("-") || text.contains("%") || text.contains("√")){
+            lineEdit->setText("");
+        }
+        lineEdit->setText(lineEdit->text()+ "2");
+    }
+
+    else if(mySender == btn3){
+        QString text = lineEdit->text();
+        if(text.contains("+") || text.contains("X")|| text.contains("/")
+                || text.contains("-") || text.contains("%") || text.contains("√")){
+            lineEdit->setText("");
+        }
+        lineEdit->setText(lineEdit->text()+ "3");
+    }
+
+    else if(mySender == btn4){
+        QString text = lineEdit->text();
+        if(text.contains("+") || text.contains("X")|| text.contains("/")
+                || text.contains("-") || text.contains("%") || text.contains("√")){
+            lineEdit->setText("");
+        }
+        lineEdit->setText(lineEdit->text()+ "4");
+    }
+
+    else if(mySender == btn5){
+        QString text = lineEdit->text();
+        if(text.contains("+") || text.contains("X")|| text.contains("/")
+                || text.contains("-") || text.contains("%") || text.contains("√")){
+            lineEdit->setText("");
+        }
+        lineEdit->setText(lineEdit->text()+ "5");
+    }
+
+    else if(mySender == btn6){
+        QString text = lineEdit->text();
+        if(text.contains("+") || text.contains("X")|| text.contains("/")
+                || text.contains("-") || text.contains("%") || text.contains("√")){
+            lineEdit->setText("");
+        }
+        lineEdit->setText(lineEdit->text()+ "6");
+    }
+
+    else if(mySender == btn7){
+        QString text = lineEdit->text();
+        if(text.contains("+") || text.contains("X")|| text.contains("/")
+                || text.contains("-") || text.contains("%") || text.contains("√")){
+            lineEdit->setText("");
+        }
+        lineEdit->setText(lineEdit->text()+ "7");
+    }
+
+    else if(mySender == btn8){
+        QString text = lineEdit->text();
+        if(text.contains("+") || text.contains("X")|| text.contains("/")
+                || text.contains("-") || text.contains("%") || text.contains("√")){
+            lineEdit->setText("");
+        }
+        lineEdit->setText(lineEdit->text()+ "8");
+    }
+
+    else if(mySender == btn9){
+        QString text = lineEdit->text();
+        if(text.contains("+") || text.contains("X")|| text.contains("/")
+                || text.contains("-") || text.contains("%") || text.contains("√")){
+            lineEdit->setText("");
+        }
+        lineEdit->setText(lineEdit->text()+ "9");
+    }
+
+    //--------------OPERATOR-BUTTONS----------------------------------------------------
+
+    else if(mySender == btnPlus){
+        QString text = lineEdit->text();
+        bool ok;
+        double x = text.toDouble(&ok);
+        if(ok) {
+            calcEngine.store(x);
+            lineEdit->setText("+");
+            calcEngine.handleOperation(Calculator::ADD);
+
+        }
+    }
+
+    else if(mySender == btnDiv){
+        QString text = lineEdit->text();
+        bool ok;
+        double x = text.toDouble(&ok);
+        if(ok) {
+            calcEngine.store(x);
+            lineEdit->setText("/");
+            calcEngine.handleOperation(Calculator::DIVIDE);
+        }
+    }
+
+    else if(mySender == btnMul){
+        QString text = lineEdit->text();
+        bool ok;
+        double x = text.toDouble(&ok);
+        if(ok) {
+            calcEngine.store(x);
+            lineEdit->setText("X");
+            calcEngine.handleOperation(Calculator::MULTIPLY);
+        }
+    }
+
+    else if(mySender == btnSub){
+        QString text = lineEdit->text();
+        bool ok;
+        double x = text.toDouble(&ok);
+        if(ok) {
+            calcEngine.store(x);
+            lineEdit->setText("-");
+            calcEngine.handleOperation(Calculator::SUBTRACT);
+        }
+    }
+
+    else if(mySender == btnEqual){
+        QString text = lineEdit->text();
+        bool ok;
+        double x = text.toDouble(&ok);
+        if(ok) {
+            calcEngine.store(x);
+            double x = calcEngine.equalsPressed();
+            QString result = QString::number(x);
+            lineEdit->setText(result);
+        }
+    }
+
+    else if(mySender == btnSqrt){
+        QString text = lineEdit->text();
+        bool ok;
+        double x = text.toDouble(&ok);
+        if(ok) {
+            calcEngine.store(x);
+            lineEdit->setText("√");
+            calcEngine.handleOperation(Calculator::SQRT);
+        }
+    }
+
+    else if(mySender == btnPoint){
+        QString text = lineEdit->text();
+        string text2 = text.toStdString();
+        if(text2.find(".") != true){
+            lineEdit->setText(lineEdit->text()+ ".");
+        }
+    }
+
+    else if(mySender == btnClear){
+        lineEdit->setText("");
+        calcEngine.clear();
+    }
+}
+
+CalcGui::~CalcGui(){
+}
+</code>
+</xmp>
+
+<h3>Calculator.cpp</h3>
+<code>
+<xmp>
+#include "Calculator.h"
+#include <stdexcept>
+#include <cmath>
+using namespace std;
+
+Calculator::Calculator() {
+    num1 = 0;
+    num2 = 0;
+    oper = NONE;
+}
+
+void Calculator::store(double value){
+    if(num2 == 0)
+       num2 = value;
+    else{
+        num1 = value;
+    }
+}
+
+double Calculator::handleOperation(Calculator::opType newOperation){
+    if(oper == NONE){
+        oper = newOperation;
+        return num2;
+    }
+    else{
+        if(oper == ADD){
+            num1 = num2 + num1;
+            num2 = 0;
+        }
+        //-----------subtraction not working with more than two variables-------
+        else if(oper == SUBTRACT){
+            num1 = num2;
+            num2 = 0;
+        }
+        else if(oper == MULTIPLY){
+            num1 = num2 * num1;
+            num2 = 0;
+        }
+
+        //----------divide not working with more than two variables----------
+        else if(oper == DIVIDE){
+            num1 = num2 / num1;
+            num2 = 0;
+        }
+        else if(oper == SQRT){
+            num1 = sqrt(num2);
+            num2 = 0;
+        }
+    }
+    return 0;
+}
+
+
+double Calculator::equalsPressed() {
+    double result;
+    switch(oper){
+    case NONE:
+        result = num2;
+        break;
+    case ADD:
+        result = num2 + num1;
+        break;
+        num2 = result;
+    case SUBTRACT:
+        result = num2 - num1;
+        num2 = result;
+        break;
+    case MULTIPLY:
+        result = num2 * num1;
+        num2 = result;
+        break;
+    case DIVIDE:
+        result = num2/num1;
+        num2 = result;
+        break;
+    case SQRT:
+        result = sqrt(num2);
+        num2 = result;
+        break;
+    }
+    return result;
+}
+
+
+void Calculator::clear() {
+    num1 = 0;
+    num2 = 0;
+    oper = NONE;
+}
+
+</code>
+</xmp>
+
+<h3> main.cpp</h3>
+<code>
+<xmp>
+#include <iostream>
+#include <QApplication>
+#include "CalcGui.h"
+#include "Calculator.h"
+
+using namespace std;
+
+int main(int argc, char* argv[])
+{
+    QApplication app(argc, argv);
+
+    CalcGui demo;
+    demo.show();
+
+    return app.exec();
+}
+</code>
+</xmp>
 
  
   </div> 
