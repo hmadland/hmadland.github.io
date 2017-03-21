@@ -72,48 +72,81 @@
   
   </style>
   <div>
-  <h1 class="display">Project name </h1>
+  <h1 class="display">Get supplier names for suppliers who supply at least two parts without using GROUP BY. </h1>
   <hr class="my">
-   <h3>title</h3>
+   <h3>SQL Statement</h3>
   <code>
 	<xmp>
-code goes here 
+SELECT distinct SNAME
+from [DataBase_1_364].[dbo].[S]
+WHERE sno in (
+select distinct SP.SNO
+from [DataBase_1_364].[dbo].[SP] join [DataBase_1_364].[dbo].[SP] as SP2 on SP.SNO = SP2.SNO
+WHERE SP.PNO != SP2.PNO)
 </xmp>
   </code>
   
-<h3>title </h3>
-<code>
-<xmp>
-code goes here 
-</xmp>
-</code>
-
-<h3>title p</h3>
-<code>
-<xmp>
-code goes here 
-</xmp>
-</code>
-
-
-<h3> title </h3>
-<code>
-<xmp>
-code goes here 
-</xmp>
-</code>
-
-
-<h3> title </h3>
-<code>
-<xmp>
-
-code goes here
-
-</xmp>
-</code>
-
   </div> 
+
+  
+<div>
+  <h1 class="display">Using EXISTS to get supplier names for suppliers who supply at least one red part, but does not supply any green part.</h1>
+  <hr class="my">
+   <h3>SQL Statement</h3>
+  <code>
+	<xmp>
+SELECT distinct SNAME
+from [DataBase_1_364].[dbo].[S] join [DataBase_1_364].[dbo].[SP] on S.SNO = SP.SNO
+WHERE exists (select *
+from [DataBase_1_364].[dbo].[P]
+Where COLOR = 'Red'
+and
+SP.PNO = P.PNO
+and
+not exists (
+SELECT *
+From [DataBase_1_364].[dbo].[P]
+WHERE COLOR = 'Green'
+))
+
+</xmp>
+  </code>
+  </div> 
+  
+  
+  <div>
+  <h1 class="display">Get PNnames for parts have an accumulative QTY greater than 500 (using EXISTS). </h1>
+  <hr class="my">
+   <h3>SQL Statement</h3>
+  <code>
+	<xmp>
+SELECT PNAME
+from [DataBase_1_364].[dbo].[P]
+WHERE EXISTS (
+select *
+from [DataBase_1_364].[dbo].[SP]
+GROUP BY PNO
+HAVING sum(QTY) > 500
+and P.PNO = SP.PNO
+)
+</xmp>
+  </code>
+  
+  </div> 
+  
+
+  <div>
+  <h1 class="display"> </h1>
+  <hr class="my">
+   <h3>SQL Statement</h3>
+  <code>
+	<xmp>
+
+</xmp>
+  </code>
+  
+  </div> 
+  
 </div>
 </div>
 </div>
