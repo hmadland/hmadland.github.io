@@ -37,6 +37,7 @@
   <ul class="nav navbar-nav">
     <li><a href="#section0">Top</a></li>
 	<li><a href="#section1">Calculator & GUI</a></li>
+	 <li><a href="#section2">Text Based Adventure Game</a></li>
 	<li><a href="#section2">Binary Search Tree</a></li>
 	<li><a href="../index.html">Home</a></li>
    </ul>
@@ -596,12 +597,429 @@ int main(int argc, char* argv[])
 </xmp>
 </code>
 
-
- 
   </div> 
 </div>
 </div>
 </div>
+
+<div id = "section2">
+
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+  <style>
+  .body{
+  background-color: #90EE90 !important;
+  }
+  
+  </style>
+  <div>
+  <h1 class="display">Text Based Adventure Game </h1>
+  <hr class="my">
+   <h3>Location.h</h3>
+  <code>
+	<xmp>
+#include <iostream>
+#include <string>
+using namespace std;
+
+#ifndef LOCATION_H
+#define LOCATION_H
+#include <string>
+
+using namespace std;
+
+enum Direction{
+    NORTH = 0,
+    EAST = 1 ,
+    WEST = 2,
+    SOUTH = 3
+};
+
+class Location{
+public:
+    /**
+     * @brief Location sets the name to "?" all neighbors to null and everything
+     * else to false.
+     */
+    Location();
+
+    /**
+     * @brief Location sets name, exit, and sets the rest to null or false as appropriate.
+     * @param locName name of location
+     * @param isTheExit true or false statement
+     */
+    Location(string locName, bool isTheExit);
+
+    /**
+     * @brief getDescription returns a string containing the name of the location, a list of the directions
+       possible to leave in, and if it has been visited before and marks visited if not.
+     * @return a description of location
+     */
+    string getDescription();
+
+    /**
+     * @brief hasNeighbor returns true if there is another location in the specified direction, false if there is
+       not (nullptr)
+     * @param dir direction of neighbor
+     * @return true or false
+     */
+    bool hasNeighbor(Direction dir);
+
+    /**
+     * @brief getNeighbor returns a pointer to the neighbor in the indicated direction or nullptr if there is not
+       a neighbor
+     * @param dir direction of location
+     * @return pointer to neighbor indicated by direction given
+     */
+    Location* getNeighbor(Direction dir);
+
+    /**
+     * @brief setNeighbor stores the indicated Location pointer as the designated neighbor
+     * @param dir direction of designated neighbor
+     * @param neighborLoc location of neighbor
+     */
+    void setNeighbor(Direction dir, Location* neighborLoc);
+
+    /**
+     * @brief isExit returns true if the Location is an exit
+     * @return true or false
+     */
+    bool isExit();
+
+    /**
+     * @brief visit marks a room as having been visited.
+     */
+    void visit();
+
+
+private:
+    string name;
+    bool visited;
+    bool exit;
+    Location* neighbors[4];
+
+};
+
+#endif // LOCATION_H
+
+
+</xmp>
+  </code>
+  
+<h3>Location.cpp </h3>
+<code>
+<xmp>
+
+#include "Location.h"
+#include <iostream>
+#include <string>
+using namespace std;
+
+Location::Location(){
+    name = "?";
+    visited = false;
+    exit = false;
+    neighbors[0] = {nullptr};
+    neighbors[1] = {nullptr};
+    neighbors[2] = {nullptr};
+    neighbors[3] = {nullptr};
+}
+
+Location::Location(string locName, bool isTheExit){
+    name = locName;
+    visited = false;
+    exit = isTheExit;
+    neighbors[0] = {nullptr};
+    neighbors[1] = {nullptr};
+    neighbors[2] = {nullptr};
+    neighbors[3] = {nullptr};
+}
+
+string Location::getDescription(){
+    if(name == "a deep, dark cave"){
+        if(visited == true){
+            return"You are in a deep, dark cave. You have already been here. \n"
+                  "Possible exits are North, South, and East. \n" ;
+        }
+
+        else{
+            visited = true;
+            return "You are now in a deep, dark cave. \n"
+                   "Possible exits are North, South and East. \n" ;
+        }
+    }
+
+    else if(name == "a collapsed cavern"){
+        if(visited == true){
+            return "You are now in a collapsed cavern. You have already been here.\n"
+                   "The only possible exit is North. \n";
+        }
+
+        else{
+            visited = true;
+            return "You are now in a collapsed cavern. \n"
+                   "The only possible exit is North. \n";
+        }
+    }
+
+    else if(name == "a musty passage"){
+        if(visited == true){
+            return "You are now in a musty passage. You have already been here. \n"
+                   "Possible exits are East and South. \n" ;
+        }
+
+        else{
+            visited = true;
+            return "You are now in a musty passage \n"
+                   "Possible exits are East and South. \n"  ;
+        }
+    }
+
+    else if(name == "the shores of an underground lake"){
+        if(visited == true){
+            return "You are now on the shores of an underground lake. You have already been here. \n"
+                   "Possible exits are North, and West. \n" ;
+        }
+
+        else{
+            visited = true;
+            return "You are now on the shores of an underground lake \n"
+                   "Possible exits are North, and West. \n" ;
+        }
+    }
+
+    else if(name == "a twisting shaft"){
+        if(visited == true){
+            return "You are now in a twisting shaft. You have already been here. \n"
+                   "Possible exits are East and South. \n" ;
+        }
+        else{
+            visited = true;
+            return "You are now in a twisting shaft \n"
+                   "Possible exits are East and South. \n" ;
+
+        }
+    }
+
+    else if (name == "a dusty alcove"){
+        if(visited == true){
+            return "You are now in a dusty alcove. You have already been here. \n"
+                   "The only exit is South. \n";
+
+        }
+
+        else{
+            visited = true;
+            return "You are now in a dusty alcove \n"
+                   "The only exit is South. \n" ;
+        }
+    }
+
+    else if(name == "a passage to the surface"){
+        if(visited == true){
+            return "You are now in a passage to the surface. You have already been here. \n"
+                   "Possible exits are West and North. \n" ;
+
+        }
+
+        else{
+            visited = true;
+            return "You are now in a passage to the surface \n"
+                   "Possible exits are West and North. \n" ;
+        }
+    }
+
+    else if(name == "the surface"){
+        return "You made it to the surface. \n"
+               "Congratulations! \n" ;
+    }
+}
+
+
+bool Location:: hasNeighbor(Direction dir){
+    if(neighbors[dir] == nullptr){
+        return false;
+    }
+    else{
+        return true;
+    }
+}
+
+Location* Location::getNeighbor(Direction dir){
+    return neighbors[dir];
+}
+
+
+void Location::setNeighbor(Direction dir, Location* neighborLoc){
+    neighbors[dir] = neighborLoc;
+}
+
+bool Location::isExit(){
+    if(name == "the surface"){
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+void Location::visit(){
+
+    if(name == "a deep, dark cave"){
+        visited = true;
+    }
+
+    else if(name == "a collapsed cavern"){
+        visited = true;
+    }
+
+    else if(name == "a musty passage"){
+        visited = true;
+    }
+
+    else if(name == "the shores of an underground lake"){
+        visited = true;
+    }
+
+    else if(name == "a twisting shaft"){
+        visited = true;
+    }
+
+    else if (name == "a dusty alcove"){
+        visited = true;
+    }
+
+    else if(name == "a passage to the surface"){
+
+        visited = true;
+
+    }
+
+    else if(name == "the surface"){
+        visited = true;
+    }
+}
+
+</xmp>
+</code>
+
+<h3>main.cpp</h3>
+<code>
+<xmp>
+
+#include <iostream>
+#include "Location.h"
+using namespace std;
+
+const int NUM_LOCATIONS = 8;
+
+void buildMap(Location allLocations[]){
+    allLocations[0] = Location("a deep, dark cave", false);
+    allLocations[1] = Location("a collapsed cavern", false);
+    allLocations[2] = Location("a musty passage", false);
+    allLocations[3] = Location("the shores of an underground lake", false);
+    allLocations[4] = Location("a twisting shaft", false);
+    allLocations[5] = Location("a dusty alcove", false);
+    allLocations[6] = Location("a passage to the surface", false);
+    allLocations[7] = Location("the surface", true);
+
+
+    allLocations[0].setNeighbor(SOUTH,&allLocations[1]);
+    allLocations[0].setNeighbor(NORTH,&allLocations[2]);
+    allLocations[0].setNeighbor(EAST,&allLocations[3]);
+
+    allLocations[1].setNeighbor(NORTH,&allLocations[0]);
+
+    allLocations[2].setNeighbor(EAST,&allLocations[4]);
+    allLocations[2].setNeighbor(SOUTH,&allLocations[0]);
+
+    allLocations[3].setNeighbor(NORTH,&allLocations[4]);
+    allLocations[3].setNeighbor(WEST,&allLocations[0]);
+
+    allLocations[4].setNeighbor(EAST, &allLocations[5]);
+    allLocations[4].setNeighbor(SOUTH, &allLocations[3]);
+
+    allLocations[5].setNeighbor(SOUTH,&allLocations[6]);
+
+    allLocations[6].setNeighbor(WEST,&allLocations[7]);
+    allLocations[6].setNeighbor(NORTH, &allLocations[5]);
+
+    //allLocations[7].setNeighbor(,&allLocations[7]);
+}
+
+int main()
+{
+    Location allLocations[NUM_LOCATIONS];
+
+    buildMap(allLocations);
+
+    Location* currentLocation = &allLocations[0];
+
+    cout << "To pick a direction type N, S, E, or W \n";
+
+    while(currentLocation->isExit() == false){
+
+        cout << currentLocation->getDescription();
+
+        cout << "Pick a direction" << endl;
+        char direction;
+        cin >> direction;
+        Direction dir;
+
+        if (direction == 'N' ){
+            dir = NORTH;
+        }
+        else if (direction == 'S' ){
+            dir = SOUTH;
+        }
+
+        else if ( direction == 'E' ){
+            dir = EAST;
+
+        }
+        else if ( direction == 'W'){
+            dir = WEST;
+
+        }
+        else if (direction != 'N' || direction != 'S' || direction != 'E' || direction != 'W'){
+            cout << "That's not a valid direction!" << endl;
+        }
+
+        if(currentLocation->hasNeighbor(dir) == true){
+            currentLocation = currentLocation->getNeighbor(dir);
+
+        }
+    }
+
+    cout << "You emerge safely from the maze!" << endl;
+}
+
+</xmp>
+</code>
+
+
+<h3> title </h3>
+<code>
+<xmp>
+code goes here 
+</xmp>
+</code>
+
+
+<h3> title </h3>
+<code>
+<xmp>
+
+code goes here
+
+</xmp>
+</code>
+
+  </div> 
+</div>
+</div>
+</div>
+
 
 
 
