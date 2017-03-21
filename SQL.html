@@ -74,7 +74,6 @@
   <div>
   <h3 class="display">Get supplier names for suppliers who supply at least two parts without using GROUP BY. </h3>
   <hr class="my">
-   <h3>SQL Statement</h3>
   <code>
 	<xmp>
 SELECT distinct SNAME
@@ -92,7 +91,6 @@ WHERE SP.PNO != SP2.PNO)
 <div>
   <h3 class="display">Using EXISTS to get supplier names for suppliers who supply at least one red part, but does not supply any green part.</h3>
   <hr class="my">
-   <h3>SQL Statement</h3>
   <code>
 	<xmp>
 SELECT distinct SNAME
@@ -117,7 +115,6 @@ WHERE COLOR = 'Green'
   <div>
   <h3 class="display">Get PNnames for parts have an accumulative QTY greater than 500 (using EXISTS). </h3>
   <hr class="my">
-   <h3>SQL Statement</h3>
   <code>
 	<xmp>
 SELECT PNAME
