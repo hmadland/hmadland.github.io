@@ -130,9 +130,80 @@ and P.PNO = SP.PNO
   </code>
   
   </div> 
+    <div>
+  <h3 class="display">Get PNnames for parts have an accumulative QTY greater than 500 (using EXISTS). </h3>
+  <hr class="my">
+  <code>
+	<xmp>
+SELECT PNAME
+from [DataBase_1_364].[dbo].[P]
+WHERE EXISTS (
+select *
+from [DataBase_1_364].[dbo].[SP]
+GROUP BY PNO
+HAVING sum(QTY) > 500
+and P.PNO = SP.PNO
+)
+</xmp>
+  </code>
   
- 
+  </div> 
   
+  <p class="lead"> Numerical SQL statments</p>
+  <h3> Using a Database with number 1-100</h3>
+  
+ <div>
+  <h3 class="display">Write a query to list all the primes less than 100</h3>
+  <hr class="my">
+  <code>
+	<xmp>
+select number
+from dbo.Numbers1To100
+where number > 1 and
+number < 100 and
+number not in (
+select distinct t1.number
+from dbo.Numbers1To100 as t1 join dbo.Numbers1To100 as t2 on t1.number > t2.number
+where
+t1.number < 100 and
+t1.number % t2.number = 0 and
+t2.number != 1 and
+t2.number != t1.number)
+</xmp>
+  </code>
+  </div> 
+  
+  
+  <div>
+  <h3 class="display">How many three-digit integers are increased by exactly 99 when the digits are reversed? 
+  Show the integer, the revised integer, and the difference.</h3>
+  <hr class="my">
+  <code>
+	<xmp>
+select distinct t1.number, t2.number, t1.number - t2.number
+from dbo.ThreeDigitNumbers as t1 join dbo.ThreeDigitNumbers as t2 on t1.number != t2.number
+where
+t1.number - t2.number = 99
+and
+t1.number > 100
+and
+t2.number > 100
+and
+not exists (SELECT *
+FROM (VALUES('%1%'),
+('%2%'),
+('%3%'),
+('%4%'),
+('%5%'),
+('%6%'),
+('%7%'),
+('%8%'),
+('%9%')) Nums(N)
+WHERE (t2.number like N and t1.number not like N))
+</xmp>
+  </code>
+  </div> 
+
 </div>
 </div>
 </div>
