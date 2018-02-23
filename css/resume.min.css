@@ -9,6 +9,12 @@ a:hover{color:#A4E200}.list-social-icons
 a .fa-lg{font-size:1.75rem}.list-icons{font-size:3rem}.list-icons .list-inline-item
 i{color:##A4E200}
 i:hover{color:#515151}
+.list-icons
+i{color:#515151}.list-icons
+i:hover{color:#A4E200}.list-icons
+
+.nav-item
+li:hover{color:#000000}.nav-item
 
 section.resume-section{border-bottom:1px solid #515151;text-color:#515151; padding-top:3rem!important;padding-bottom:3rem!important}
 section.resume-section .resume-item .resume-date{min-width:none}
@@ -19,10 +25,12 @@ section.resume-section .resume-item .resume-date{min-width:18rem}}
 a{color:#000000}a:active,a:focus,a:hover{color:#000000} a{font-weight: bold;}
 
 
+
  #testing .navbar-nav .nav-item .nav-link {
    font-weight: 600;
    text-transform: uppercase;
-   color:#515151; }
+   color:#515151;
+ }
 
  @media (min-width: 992px) {
    #testing {
