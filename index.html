@@ -47,7 +47,7 @@
             <a class="nav-link js-scroll-trigger" href="#about">About</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#experience">Experience <br>and <br> Portfolio</a>
+            <a class="nav-link js-scroll-trigger" href="#experience">Experience</a>
           </li>
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="#education">Education</a>
@@ -60,6 +60,9 @@
           </li>
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="HMresume.pdf">Resume</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
           </li>
         </ul>
       </div>
@@ -74,7 +77,7 @@
             <span class="text-secondary">Madland</span>
           </h1>
           <div class="subheading mb-5">McMinnville, Oregon · (503) 435-9953
-            <a href="mailto:hmadland15@mail.wou.edu">hkmadland23@gmail.com</a>
+            <a href="#contact">hkmadland23@gmail.com</a>
           </div>
           <p class="mb-5">
             I recently graduated from Western Oregon University with a B.S. in Computer Science and a minor in Writing. I am seeking a
@@ -120,21 +123,71 @@
               <div class="subheading mb-3">Western Oregon University</div>
 
               <div class="subheading mb-3"> <a href="https://hmadland.github.io/460/">Project Portfolio </a></div>
-                <p>The portfolio above houses code and documentation from my Senior Capstone projects at WOU as well as
+                <p>This portfolio houses code and documentation from my Senior Capstone projects at WOU as well as
                   personal projects I've completed in my free time.
               </p>
+              <div class="col-lg-4 col-sm-6">
+                <a class="portfolio-box" href="https://hmadland.github.io/460/">
+                  <img width = "400" height="250" src="img/portfolio/fullsize/blog.JPG" alt="lkdsajf">
+                  <div class="portfolio-box-caption">
+                    <div class="portfolio-box-caption-content">
+                      <div class="project-category text-faded">
+                        Other Projects
+                      </div>
+                      <div class="project-name">
+                        Portfolio
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              <br>
 
-                <div class="subheading mb-3"> <a href="https://bitbucket.org/hmadland/">Group Repository </a>  and    <a href="https://elimination.azurewebsites.net/">Finished Group Project </a> </div>
+                <div class="subheading mb-3"> <a href="https://bitbucket.org/hmadland/">Group Repository </a> </div>
                 <p>This repo holds the code and documentation from my group capstone project build for Software Engineering II & III at WOU.
                 I worked in a development team of three other student developers building our group
                 project and learning Agile development methods.
               </p>
+
+              <div class="col-lg-4 col-sm-6">
+                <a class="portfolio-box"  href="https://bitbucket.org/hmadland/sneakysoftware/">
+                  <img width = "400" height="250" src="img/portfolio/fullsize/Elimination.JPG" alt="Elimination Framework">
+                  <div class="portfolio-box-caption">
+                    <div class="portfolio-box-caption-content">
+                      <div class="project-category text-faded">
+                      Senior Project: Group
+                      </div>
+                      <div class="project-name">
+                        The Elimination Framework and API, an ASP.NET MVC 5 web app written in C#.
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              <br>
 
 
                <div class="subheading mb-3"><a href="https://bitbucket.org/hmadland/">Individual Repository</a></div>
               <p> While working on my group project I also worked on an individual one as part of the senior sequence.
                It usesd our group projects API.
              </p>
+
+             <div class="col-lg-4 col-sm-6">
+               <a class="portfolio-box" href="https://bitbucket.org/hmadland/paranoia">
+                 <img width = "400" height="250"  src="img/portfolio/fullsize/Paranoia.png" alt="">
+                 <div class="portfolio-box-caption">
+                   <div class="portfolio-box-caption-content">
+                     <div class="project-category text-faded">
+                       Senior Project: Individual
+                     </div>
+                     <div class="project-name">
+                       Paranoia, an Android app written in Kotlin
+                     </div>
+                   </div>
+                 </div>
+               </a>
+             </div>
+             <br>
 
             </div>
           </div>
@@ -267,6 +320,26 @@
               Star Trek and Office marathons are my go to backup.</p>
         </div>
       </section>
+
+<div class="container-fluid p-0">
+      <section id="contact">
+
+          <form action="https://formspree.io/hkmadland23@gmail.com"
+      method="POST">
+          <input type="text" name="name" placeholder="Your name">
+          <input type="email" name="_replyto" placeholder="Your email">
+          <input type="hidden" name="_subject" value="Website contact" />
+          <textarea class="form-control form-subject" name="message" placeholder="Your message"></textarea>
+          <input type="text" name="_gotcha" style="display:none" />
+          <input type="submit" value="Send">
+        </form>
+        <script>
+            var contactform =  document.getElementById('contactform');
+            contactform.setAttribute('action', '//formspree.io/' + 'hkmadland23' + '@' + 'gmail' + '.' + 'com');
+        </script>
+      </section>
+      <br>
+      <br>
     </div>
 
     <!-- Bootstrap core JavaScript -->
